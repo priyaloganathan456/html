@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Grocery Shop</title>
+    <style>
+        /* --- General Reset & Layout --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #dff5e1;
+            min-height: 100vh;
+        }
+
+        /* --- Login Page Container --- */
+        #login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: green;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* --- Main Dashboard --- */
+        #main-dashboard {
+            display: none;
+            background: #f4f4f4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: green;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* --- Grid & Product Cards --- */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            flex: 1; /* Pushes the footer to the absolute bottom of the viewport */
+        }
+        .card {
+            background: white;
+            width: 220px;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card img {
+            width: 180px;
+            height: 150px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .card h3 {
+            margin: 10px 0 5px 0;
+        }
+        .card p {
+            color: #555;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        /* --- Footer Styles (Bottom Action Area) --- */
+        footer {
+            background: #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        .logout-btn {
+            background: #c62828; /* Noticeable red color for destructive actions */
+            color: white;
+            padding: 10px 25px;
+            font-size: 14px;
+            width: auto; /* Overrides the global full-width button styling */
+            display: inline-block;
+        }
+        .logout-btn:hover {
+            background: #b71c1c;
+        }
+
+        /* --- Global Button Styling --- */
+        button {
+            background: green;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+        button:hover {
+            background: #1b5e20;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1: LOGIN PAGE -->
+    <div id="login-page">
+        <div class="login-box">
+            <h2>Fresh Grocery Shop</h2>
+            <form onsubmit="handleLogin(event)">
+                <input type="text" placeholder="Username" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SECTION 2: MAIN DASHBOARD -->
+    <div id="main-dashboard" style="display: none;">
+        <header>
+            <h1>Fresh Grocery Shopping</h1>
+            <p>Healthy Food, Happy Life</p>
+        </header>
+
+        <div class="container">
+            <!-- Apple -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce" alt="Apple">
+                <h3>Apple</h3>
+                <p>₹120/kg</p>
+                <button>Add to Cart</button>
+            </div>
+
+            <!-- Vegetables -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e" alt="Vegetables">
+                <h3>Vegetables</h3>
+                <p>₹80/kg</p>
+                <button>Add to Cart</button>
+            </div>
+
+            <!-- Milk -->
+            <div class="card">
+                <img src="milk.jpg" alt="Milk">
+                <h3>Milk</h3>
+                <p>₹60/Litre</p>
+                <button>Add to Cart</button>
+            </div>
+
+            <!-- Bread -->
+            <div class="card">
+                <img src="bread.jpg" alt="Bread">
+                <h3>Bread</h3>
+                <p>₹45</p>
+                <button>Add to Cart</button>
+            </div>
+
+            <!-- Rice -->
+            <div class="card">
+                <img src="rice.jpg" alt="Rice">
+                <h3>Rice</h3>
+                <p>₹70/kg</p>
+                <button>Add to Cart</button>
+            </div>
+
+            <!-- Eggs -->
+            <div class="card">
+                <img src="egg.jpg" alt="Egg">
+                <h3>Eggs</h3>
+                <p>₹80/dozen</p>
+                <button>Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- NEW BOTTOM FOOTER FOR LOGOUT -->
+        <footer>
+            <button class="logout-btn" onclick="handleLogout()">Logout from Account</button>
+        </footer>
+    </div>
+
+    <!-- --- Page Flow Control Scripts --- -->
+    <script>
+        function handleLogin(event) {
+            event.preventDefault(); 
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('main-dashboard').style.display = 'flex'; // Changed to flex to honor structural sticky footer rules
+        }
+
+        function handleLogout() {
+            document.getElementById('main-dashboard').style.display = 'none';
+            document.getElementById('login-page').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
