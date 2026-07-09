@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Grocery Shop</title>
+    <style>
+        /* --- General Reset & Layout --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #dff5e1;
+            min-height: 100vh;
+        }
+
+        /* --- Login Page Container --- */
+        #login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: green;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* --- Main Dashboard --- */
+        #main-dashboard {
+            display: none;
+            background: #f4f4f4;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        header {
+            background: green;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* --- Main Content Layout --- */
+        .dashboard-body {
+            display: flex;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        /* --- Grid & Product Cards --- */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            flex: 3;
+        }
+        .card {
+            background: white;
+            width: 220px;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card img {
+            width: 180px;
+            height: 150px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .card h3 {
+            margin: 10px 0 5px 0;
+        }
+        .card p {
+            color: #555;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        /* --- Cart Section --- */
+        .cart-sidebar {
+            flex: 1;
+            min-width: 320px;
+            background: white;
+            padding: 20px;
+            border-left: 2px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-sidebar h2 {
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid green;
+            padding-bottom: 5px;
+        }
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        
+        /* --- Cart Action Controls (+ / -) --- */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+        }
+        .qty-btn {
+            background: #e0e0e0;
+            color: #333;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 3px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .qty-btn:hover {
+            background: #ccc;
+        }
+        .qty-number {
+            font-weight: bold;
+            min-width: 15px;
+            text-align: center;
+        }
+
+        /* --- Form Inputs Box inside Sidebar (Address & Payment) --- */
+        .checkout-box {
+            margin: 10px 0;
+            background: #fcfcfc;
+            padding: 12px;
+            border: 1px dashed #ccc;
+            border-radius: 5px;
+        }
+        .checkout-box label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .checkout-box textarea, .checkout-box select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #aaa;
+            background: white;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+        }
+        .location-btn {
+            background: #1976d2;
+            color: white;
+            font-size: 11px;
+            padding: 5px;
+            margin-top: 5px;
+            border-radius: 3px;
+            font-weight: normal;
+        }
+        .location-btn:hover {
+            background: #115293;
+        }
+
+        .cart-total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 2px solid #ccc;
+            padding-top: 10px;
+        }
+        .place-order-btn {
+            background: #ff9800;
+            color: white;
+            font-size: 16px;
+        }
+        .place-order-btn:hover {
+            background: #e65100;
+        }
+
+        /* --- Footer Styles --- */
+        footer {
+            background: #e0e0e0;
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid #ccc;
+        }
+        .logout-btn {
+            background: #c62828;
+            color: white;
+            padding: 8px 20px;
+            font-size: 14px;
+            width: auto;
+            display: inline-block;
+        }
+        .logout-btn:hover {
+            background: #b71c1c;
+        }
+
+        /* --- Global Button Styling --- */
+        button {
+            background: green;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+        button:hover {
+            background: #1b5e20;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1: LOGIN PAGE -->
+    <div id="login-page">
+        <div class="login-box">
+            <h2>Fresh Grocery Shop</h2>
+            <form onsubmit="handleLogin(event)">
+                <input type="text" placeholder="Username" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SECTION 2: MAIN DASHBOARD -->
+    <div id="main-dashboard">
+        <header>
+            <h1>Fresh Grocery Shopping</h1>
+            <p>Healthy Food, Happy Life</p>
+        </header>
+
+        <div class="dashboard-body">
+            <div class="container">
+                <!-- Apple -->
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce" alt="Apple">
+                    <h3>Apple</h3>
+                    <p>₹120/kg</p>
+                    <button onclick="addToCart('Apple', 120)">Add to Cart</button>
+                </div>
+
+                <!-- Vegetables -->
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e" alt="Vegetables">
+                    <h3>Vegetables</h3>
+                    <p>₹80/kg</p>
+                    <button onclick="addToCart('Vegetables', 80)">Add to Cart</button>
+                </div>
+
+                <!-- Milk -->
+                <div class="card">
+                    <img src="milk.jpg" alt="Milk">
+                    <h3>Milk</h3>
+                    <p>₹60/Litre</p>
+                    <button onclick="addToCart('Milk', 60)">Add to Cart</button>
+                </div>
+
+                <!-- Bread -->
+                <div class="card">
+                    <img src="bread.jpg" alt="Bread">
+                    <h3>Bread</h3>
+                    <p>₹45</p>
+                    <button onclick="addToCart('Bread', 45)">Add to Cart</button>
+                </div>
+
+                <!-- Rice -->
+                <div class="card">
+                    <img src="rice.jpg" alt="Rice">
+                    <h3>Rice</h3>
+                    <p>₹70/kg</p>
+                    <button onclick="addToCart('Rice', 70)">Add to Cart</button>
+                </div>
+
+                <!-- Eggs -->
+                <div class="card">
+                    <img src="egg.jpg" alt="Egg">
+                    <h3>Eggs</h3>
+                    <p>₹80/dozen</p>
+                    <button onclick="addToCart('Eggs', 80)">Add to Cart</button>
+                </div>
+            </div>
+
+            <!-- SIDEBAR SHOPPING CART -->
+            <div class="cart-sidebar">
+                <h2>Your Cart</h2>
+                <div class="cart-items" id="cart-items-container">
+                    <p style="color: #888; text-align: center; margin-top: 20px;">Your cart is empty.</p>
+                </div>
+
+                <!-- NEW: Delivery Location Box -->
+                <div class="checkout-box">
+                    <label for="delivery-address">Delivery Address:</label>
+                    <textarea id="delivery-address" rows="2" placeholder="Enter flat number, street, area..."></textarea>
+                    <button class="location-btn" onclick="fetchLocation()">📍 Use Current Location</button>
+                </div>
+
+                <!-- Payment Options Box -->
+                <div class="checkout-box">
+                    <label for="payment-method">Select Payment Method:</label>
+                    <select id="payment-method">
+                        <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+                        <option value="UPI (GPay/PhonePe)">UPI (GPay / PhonePe)</option>
+                        <option value="Credit/Debit Card">Credit / Debit Card</option>
+                    </select>
+                </div>
+
+                <div class="cart-total">
+                    <span>Total Amount:</span>
+                    <span>₹<span id="total-amount-display">0</span></span>
+                </div>
+                <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+            </div>
+        </div>
+
+        <footer>
+            <button class="logout-btn" onclick="handleLogout()">Logout from Account</button>
+        </footer>
+    </div>
+
+    <!-- --- Page Flow Control & Cart Logic Scripts --- -->
+    <script>
+        function handleLogin(event) {
+            event.preventDefault(); 
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('main-dashboard').style.display = 'flex'; 
+        }
+
+        function handleLogout() {
+            document.getElementById('main-dashboard').style.display = 'none';
+            document.getElementById('login-page').style.display = 'flex';
+        }
+
+        // --- CART ARRAY ---
+        let cart = [];
+
+        function addToCart(itemName, price) {
+            const existingItem = cart.find(item => item.name === itemName);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name: itemName, price: price, quantity: 1 });
+            }
+            updateCartUI();
+        }
+
+        function changeQuantity(itemName, amount) {
+            const item = cart.find(item => item.name === itemName);
+            if (!item) return;
+
+            item.quantity += amount;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.name !== itemName);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const totalDisplay = document.getElementById('total-amount-display');
+            
+            container.innerHTML = '';
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center; margin-top: 20px;">Your cart is empty.</p>';
+                totalDisplay.innerText = '0';
+                return;
+            }
+
+            let grandTotal = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                grandTotal += itemTotal;
+
+                const itemRow = document.createElement('div');
+                itemRow.className = 'cart-item';
+                itemRow.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        <small>₹${item.price} each</small>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQuantity('${item.name}', -1)">-</button>
+                            <span class="qty-number">${item.quantity}</span>
+                            <button class="qty-btn" onclick="changeQuantity('${item.name}', 1)">+</button>
+                        </div>
+                    </div>
+                    <strong>₹${itemTotal}</strong>
+                `;
+                container.appendChild(itemRow);
+            });
+
+            totalDisplay.innerText = grandTotal;
+        }
+
+        // NEW: Geolocation API function
+        function fetchLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        document.getElementById('delivery-address').value = `📍 GPS Location: (Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)})`;
+                    },
+                    (error) => {
+                        alert("Unable to fetch location. Please type your address manually.");
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
+        }
+
+        // Updated Order Placement to include address checking
+        function placeOrder() {
+            if (cart.length === 0) {
+                alert("Your cart is empty! Please add some groceries first.");
+                return;
+            }
+
+            const address = document.getElementById('delivery-address').value.trim();
+            if (address === "") {
+                alert("Please provide a delivery address before placing your order!");
+                return;
+            }
+
+            const finalAmount = document.getElementById('total-amount-display').innerText;
+            const chosenMethod = document.getElementById('payment-method').value;
+            
+            alert(`🎉 Order Placed Successfully!\n\n📍 Deliver to: ${address}\n💳 Paid via: ${chosenMethod}\n💰 Total Bill: ₹${finalAmount}\n\nYour fresh items will arrive soon!`);
+            
+            // Clear cart & address box
+            cart = [];
+            document.getElementById('delivery-address').value = '';
+            updateCartUI();
+        }
+    </script>
+</body>
+</html>
